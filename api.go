@@ -653,7 +653,7 @@ func (s *Session) DeleteDashboard(name string) (err error) {
 }
 
 //ConvertTemplate converts a string to a dashboard structure
-func ConvertTemplate(file string) (dashboard Dashboard, err error) {
+func ConvertTemplate(file, projectName string) (dashboard Dashboard, err error) {
 	f, err := os.Open(file)
 	if err != nil {
 		panic(err)
@@ -710,9 +710,6 @@ func ConvertTemplate(file string) (dashboard Dashboard, err error) {
 				target.Tags = append(target.Tags, hostTag)
 				fieldsTag := Tag{Key: "name", Value: "/" + fields + "/", Condition: "AND"}
 				target.Tags = append(target.Tags, fieldsTag)
-				target.GroupBy = NewGroupBy()
-				target.GroupBy = append(target.GroupBy, GroupBy{Type: "tag", Params: []string{"name"}})
-				target.GroupBy = append(target.GroupBy, GroupBy{Type: "tag", Params: []string{"host"}})
 				panel.Targets = append(panel.Targets, target)
 			}
 		}
