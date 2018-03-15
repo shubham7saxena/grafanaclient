@@ -337,7 +337,7 @@ func (target *Target) TagKeys() []string {
 type Metric struct {
 	Measurement string
 	Fields      []string
-	Hosts       []string
+	Projects    []string
 	Alias       []string
 }
 
@@ -700,16 +700,13 @@ func ConvertTemplate(file, projectName string) (dashboard Dashboard, err error) 
 			}
 			for _, metric := range panel.Metrics {
 				target := NewTarget()
-				fields := strings.Join(metric.Fields, "|")
-				hosts := strings.Join(metric.Hosts, "|")
+				projects := strings.Join(metric.Projects, "|")
 
 				target.Measurement = metric.Measurement
 
 				// adding tags
-				hostTag := Tag{Key: "host", Value: "/" + hosts + "/"}
-				target.Tags = append(target.Tags, hostTag)
-				fieldsTag := Tag{Key: "name", Value: "/" + fields + "/", Condition: "AND"}
-				target.Tags = append(target.Tags, fieldsTag)
+				projectTag := Tag{Key: "project", Value: "/" + projects + "/"}
+				target.Tags = append(target.Tags, projectTag)
 				panel.Targets = append(panel.Targets, target)
 			}
 		}
